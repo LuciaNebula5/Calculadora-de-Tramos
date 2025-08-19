@@ -1,4 +1,4 @@
-# Calculadora de Tramos Aplicación 
+# Calculadora de Tramos Aplicación
    
 🔧 **Versión beta - ⚠️ DISPONIBLE SOLO PARA PC**   
    
@@ -22,6 +22,7 @@ Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨
 
 ## Problemas o sugerencias
 🧩 Si tienes algún tipo de problema o sugerencia, ponte en contacto por email: pitufoprogramer09@gmail.com
+
 
 
 
