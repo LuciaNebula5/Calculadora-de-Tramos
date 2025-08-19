@@ -11,5 +11,6 @@ Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨
 ## Instalación
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/TU_USUARIO/TU_REPO.git
+   git clone [https://github.com/TU_USUARIO/TU_REPO.git](https://github.com/LuciaNebula5/Calculadora-de-Tramos)
+
 
