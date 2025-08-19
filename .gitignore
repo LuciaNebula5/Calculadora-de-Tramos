@@ -1,0 +1,13 @@
+# Carpetas de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Carpetas y archivos de PyInstaller
+build/
+dist/
+*.spec
+
+# Entornos virtuales
+.venv/
+venv/
