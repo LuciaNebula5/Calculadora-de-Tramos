@@ -10,7 +10,7 @@ Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨
 
 ## Descarga
 1. Si no tienes Python instalado, puedes probar la aplicación directamente:   
-👉 [Descargar Calculadora de Tramo (versión beta)](https://github.com/TU_USUARIO/TU_REPO/releases/download/v0.1-beta/Calculadora_de_tramo.exe)
+👉 (https://github.com/TU_USUARIO/TU_REPO/releases/download/v0.1-beta/Calculadora_de_tramo.exe)](https://github.com/LuciaNebula5/Calculadora-de-Tramos)
 
 2. Si tienes Python instalado y quieres hacer la instalación desde código:
    - Clona el repositorio   
@@ -19,3 +19,4 @@ Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨
 
 ## Problemas o sugerencias
 🧩 Si tienes algún tipo de problema o sugerencia, ponte en contacto por email: pitufoprogramer09@gmail.com
+
