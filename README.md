@@ -1,5 +1,5 @@
 # Calculadora de Tramos Aplicación
-⚠️DISPONIBLE PARA **Android** Y **PC**
+⚠️DISPONIBLE PARA **Android** y **PC**
 
 🔧**Versión:** 1.0  
 Creada con Python y Kivy.   
