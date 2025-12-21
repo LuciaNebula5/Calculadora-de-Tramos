@@ -1,3 +1,4 @@
+‼️‼️SOLO DISPONIBLE A PARTIR DEL **23/12/2025**‼️‼️
 # Calculadora de Tramos Aplicación
 ⚠️DISPONIBLE PARA **Android** y **PC**
 
