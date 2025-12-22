@@ -16,9 +16,10 @@ from datetime import datetime, timedelta
 import calendar
 
 # Configurar tamaño mínimo de ventana
-Window.size = (400, 700)
+#ACTIVAR SOLO PARA .exe y probar la app
+#Window.size = (400, 700)
 
-
+#Calendario Interactivo
 class CalendarioPopup(Popup):
     """Popup con calendario interactivo para selección de fechas"""
     
@@ -99,7 +100,7 @@ class CalendarioPopup(Popup):
         
         # Actualizar título
         meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                'Julio', 'Agosto', 'Sept', 'Octubre', 'Nov', 'Dic']
         self.label_mes_year.text = f"{meses[self.fecha_seleccionada.month - 1]} {self.fecha_seleccionada.year}"
         
         # Obtener días del mes
@@ -191,13 +192,17 @@ class CalculadoraTramosApp(App):
         self.fecha_inicial = None
         self.fecha_final = None
         
+        # Valores económicos
+        self.valor_tramo2 = 0
+        self.valor_tramo3 = 0
+        
         # Layout principal
         layout = BoxLayout(orientation='vertical', padding=dp(15), spacing=dp(15))
         
         # Título
         titulo = Label(
             text=f'Calculadora de\nTramos por Fechas',
-            font_size='25sp',
+            font_size='30sp',
             bold=True,
             size_hint_y=None,
             height=dp(50),
@@ -209,60 +214,50 @@ class CalculadoraTramosApp(App):
         
         # Indicaciones
         indicaciones = Label(
-            text='Introduce las fechas para calcular los tramos.',
+            text='Introduce las fechas.',
             font_size='18sp',
             size_hint_y=None,
             height=dp(30),
             color=(0.8, 0.8, 0.8, 1)
         )
         layout.add_widget(indicaciones)
-        
+
         # Sección de fechas
         fechas_layout = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=dp(140),
+            height=dp(90),
             spacing=dp(10)
         )
         
         # Fecha inicial
-        fecha_ini_layout = BoxLayout(size_hint_y=None, height=dp(60), spacing=dp(10))
-        '''fecha_ini_layout.add_widget(Label(
-            text='Fecha inicial:',
-            size_hint_x=0.35,
-            font_size='16sp
-        ))'''
-        
+        fecha_ini_layout = BoxLayout(size_hint_y=None, height=dp(39), spacing=dp(10))
+            #Cuadro blanco fecha inicial
         self.input_fecha_inicial = TextInput(
             text='Fecha Inicial',
+            font_size='21sp',
             readonly=True,
-            size_hint_x=0.45,
+            size_hint_x=0.45, #Espacio del cuadro blanco
             multiline=False,
             background_color=(0.95, 0.95, 0.95, 1)
         )
-        
         fecha_ini_layout.add_widget(self.input_fecha_inicial)
         
-        btn_cal_inicial = Button(
+        btn_cal_inicial = Button(   #Btn calendario
             text='Calendario',
             size_hint_x=0.2,
             on_press=lambda x: self.abrir_calendario('inicial'),
             background_color=(0.3, 0.6, 1, 1)
         )
         fecha_ini_layout.add_widget(btn_cal_inicial)
-        
         fechas_layout.add_widget(fecha_ini_layout)
         
         # Fecha final
-        fecha_fin_layout = BoxLayout(size_hint_y=None, height=dp(60), spacing=dp(10))
-        '''fecha_fin_layout.add_widget(Label(
-            text='Fecha final:',
-            size_hint_x=0.35,
-            font_size='16sp'
-        ))'''
-        
+        fecha_fin_layout = BoxLayout(size_hint_y=None, height=dp(39), spacing=dp(10))
+            #Cuadro blanco fecha inicial
         self.input_fecha_final = TextInput(
             text='Fecha Final',
+            font_size='21sp',
             readonly=True,
             size_hint_x=0.45,
             multiline=False,
@@ -282,6 +277,54 @@ class CalculadoraTramosApp(App):
         
         layout.add_widget(fechas_layout)
         
+        # Sección de valores económicos
+        economicos_layout = BoxLayout(
+            orientation='vertical',
+            size_hint_y=None,
+            height=dp(90),
+            spacing=dp(10)
+        )
+        
+        # Valor Tramo 2
+        valor_t2_layout = BoxLayout(size_hint_y=None, height=dp(35), spacing=dp(10))
+        valor_t2_layout.add_widget(Label(
+            text='€/día Tramo 2:',
+            size_hint_x=0.35,
+            font_size='20sp'
+        ))
+        
+        self.input_valor_t2 = TextInput(
+            text='0',
+            size_hint_x=0.45,
+            font_size='19sp',
+            multiline=False,
+            input_filter='float',
+            background_color=(0.95, 0.95, 0.95, 1)
+        )
+        valor_t2_layout.add_widget(self.input_valor_t2)
+        economicos_layout.add_widget(valor_t2_layout)
+        
+        # Valor Tramo 3
+        valor_t3_layout = BoxLayout(size_hint_y=None, height=dp(35), spacing=dp(10))
+        valor_t3_layout.add_widget(Label(
+            text='€/día Tramo 3:',
+            size_hint_x=0.35,
+            font_size='20sp'
+        ))
+        
+        self.input_valor_t3 = TextInput(
+            text='0',
+            size_hint_x=0.45,
+            font_size='19sp',
+            multiline=False,
+            input_filter='float',
+            background_color=(0.95, 0.95, 0.95, 1)
+        )
+        valor_t3_layout.add_widget(self.input_valor_t3)
+        economicos_layout.add_widget(valor_t3_layout)
+        
+        layout.add_widget(economicos_layout)
+        
         # Botón calcular
         self.btn_calcular = Button(
             text='CALCULAR',
@@ -298,19 +341,26 @@ class CalculadoraTramosApp(App):
         layout.add_widget(Label(
             text='_' * 50,
             size_hint_y=None,
-            height=dp(20)
+            height=dp(10)
         ))
         
         # Área de resultados con scroll
-        scroll = ScrollView()
+        scroll = ScrollView(
+            size_hint=(1, 1),
+            do_scroll_x=False
+        )
+
         self.resultados_layout = BoxLayout(
             orientation='vertical',
-            spacing=dp(10),
+            spacing=dp(5),
             size_hint_y=None,
-            padding=dp(10)
+            padding=dp(5)
         )
-        self.resultados_layout.bind(minimum_height=self.resultados_layout.setter('height'))
-        
+
+        self.resultados_layout.bind(
+            minimum_height=self.resultados_layout.setter('height')
+        )
+
         scroll.add_widget(self.resultados_layout)
         layout.add_widget(scroll)
         
@@ -376,6 +426,17 @@ class CalculadoraTramosApp(App):
             self.mostrar_error("La fecha final debe ser posterior a la fecha inicial.")
             return
         
+        # Obtener valores económicos
+        try:
+            self.valor_tramo2 = float(self.input_valor_t2.text) if self.input_valor_t2.text else 0
+        except ValueError:
+            self.valor_tramo2 = 0
+        
+        try:
+            self.valor_tramo3 = float(self.input_valor_t3.text) if self.input_valor_t3.text else 0
+        except ValueError:
+            self.valor_tramo3 = 0
+        
         # Limpiar resultados anteriores
         self.resultados_layout.clear_widgets()
         
@@ -385,79 +446,105 @@ class CalculadoraTramosApp(App):
             font_size='20sp',
             bold=True,
             size_hint_y=None,
-            height=dp(40),
+            height=dp(20),
             color=(0.2, 0.2, 0.2, 1)
         ))
         
+        # Calcular días totales
+        total_dias = (self.fecha_final - self.fecha_inicial).days + 1
+        
         # TRAMO 1: 13 días naturales
         tramo1_inicio = self.fecha_inicial
-        tramo1_dias = 13
+        tramo1_dias = min(13, total_dias)  # Máximo 13 días o los que haya
         tramo1_fin = tramo1_inicio + timedelta(days=tramo1_dias - 1)
         
         self.mostrar_tramo(1, tramo1_inicio, tramo1_fin, tramo1_dias)
         
-        # TRAMO 2: 7 días naturales
-        tramo2_inicio = tramo1_fin + timedelta(days=1)
-        tramo2_dias = 7
-        tramo2_fin = tramo2_inicio + timedelta(days=tramo2_dias - 1)
+        # TRAMO 2: 7 días naturales (solo si hay más de 13 días)
+        if total_dias > 13:
+            tramo2_inicio = tramo1_fin + timedelta(days=1)
+            dias_restantes = total_dias - 13
+            tramo2_dias = min(7, dias_restantes)  # Máximo 7 días o los que queden
+            tramo2_fin = tramo2_inicio + timedelta(days=tramo2_dias - 1)
+            
+            importe_t2 = tramo2_dias * self.valor_tramo2
+            self.mostrar_tramo(2, tramo2_inicio, tramo2_fin, tramo2_dias, importe_t2)
         
-        self.mostrar_tramo(2, tramo2_inicio, tramo2_fin, tramo2_dias)
-        
-        # TRAMO 3: Resto hasta fecha final
-        tramo3_inicio = tramo2_fin + timedelta(days=1)
-        tramo3_fin = self.fecha_final
-        tramo3_dias = (tramo3_fin - tramo3_inicio).days + 1
-        
-        self.mostrar_tramo(3, tramo3_inicio, tramo3_fin, tramo3_dias)
+        # TRAMO 3: Resto hasta fecha final (solo si hay más de 20 días)
+        if total_dias > 20:
+            tramo3_inicio = tramo1_fin + timedelta(days=8)  # 13 + 7 + 1
+            tramo3_fin = self.fecha_final
+            tramo3_dias = (tramo3_fin - tramo3_inicio).days + 1
+            
+            importe_t3 = tramo3_dias * self.valor_tramo3
+            self.mostrar_tramo(3, tramo3_inicio, tramo3_fin, tramo3_dias, importe_t3)
         
         # Resumen total
-        total_dias = (self.fecha_final - self.fecha_inicial).days + 1
-        
         resumen = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=dp(60),
-            padding=dp(10)
+            height=dp(90),
+            padding=dp(10),
+            spacing=dp(5)
         )
         resumen.add_widget(Label(
             text=f'Total del período: {total_dias} días naturales',
-            font_size='16sp',
+            font_size='18sp',
             bold=True,
             color=(0.1, 0.4, 0.7, 1)
         ))
         
+        # Calcular importe total
+        importe_total = 0
+        if total_dias > 13:
+            dias_t2 = min(7, total_dias - 13)
+            importe_total += dias_t2 * self.valor_tramo2
+        if total_dias > 20:
+            dias_t3 = total_dias - 20
+            importe_total += dias_t3 * self.valor_tramo3
+        
+        if importe_total > 0:
+            resumen.add_widget(Label(
+                text=f'Importe total: {importe_total:.2f} €',
+                font_size='22sp',
+                bold=True,
+                color=(0.1, 0.7, 0.1, 1)
+            ))
+        
         self.resultados_layout.add_widget(resumen)
     
-    def mostrar_tramo(self, numero, fecha_inicio, fecha_fin, dias):
-        """Muestra la información de un tramo"""
+    def mostrar_tramo(self, numero, fecha_inicio, fecha_fin, dias, importe=None):
         tramo_layout = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=dp(140),
             padding=dp(10),
             spacing=dp(5)
         )
-        
-        # Título del tramo
+        tramo_layout.bind(minimum_height=tramo_layout.setter('height'))
+
         tramo_layout.add_widget(Label(
             text=f'TRAMO {numero}',
             font_size='20sp',
             bold=True,
             size_hint_y=None,
-            height=dp(30),
+            height=dp(40),
             color=(0.13, 0.59, 0.95, 1)
         ))
-        
-        # Información
-        info_layout = BoxLayout(orientation='vertical', spacing=dp(5))
-        
+
+        info_layout = BoxLayout(
+            orientation='vertical',
+            spacing=dp(10),
+            size_hint_y=None
+        )
+        info_layout.bind(minimum_height=info_layout.setter('height'))
+
         info_layout.add_widget(Label(
             text=f'Fecha de inicio: {fecha_inicio.strftime("%d/%m/%Y")}',
             font_size='18sp',
             size_hint_y=None,
             height=dp(25)
         ))
-        
+
         info_layout.add_widget(Label(
             text=f'Número de días: {dias} días.',
             font_size='18sp',
@@ -465,27 +552,35 @@ class CalculadoraTramosApp(App):
             height=dp(25),
             bold=True
         ))
-        
+
         info_layout.add_widget(Label(
             text=f'Fecha de fin: {fecha_fin.strftime("%d/%m/%Y")}',
             font_size='18sp',
             size_hint_y=None,
             height=dp(25),
             bold=True,
-            color =(1, 0.6, 0.3, 1)
+            color=(1, 0.6, 0.3, 1)
         ))
-        
+
+        if importe is not None and importe > 0:
+            info_layout.add_widget(Label(
+                text=f'Importe: {importe:.2f} €',
+                font_size='18sp',
+                size_hint_y=None,
+                height=dp(25),
+                bold=True,
+                color=(0.1, 0.6, 0.1, 1)
+            ))
+
         tramo_layout.add_widget(info_layout)
-        
-        # Añadir al layout de resultados
         self.resultados_layout.add_widget(tramo_layout)
-        
-        # Separador
+
         self.resultados_layout.add_widget(Label(
             text='=' * 40,
             size_hint_y=None,
             height=dp(20)
         ))
+
 
 
 if __name__ == '__main__':
