@@ -15,7 +15,7 @@ Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨
 
 ## Descarga
 1. Probar la aplicación directamente:   
-👉 **Android v1.02:** https://github.com/LuciaNebula5/Calculadora-de-Tramos/releases/tag/v2.0
+👉 **Android v1.02:** https://github.com/LuciaNebula5/Calculadora-de-Tramos/releases/tag/v2.0   
 👉 **PC:** (próximamente)
 
 2. Hacer la instalación desde código:
