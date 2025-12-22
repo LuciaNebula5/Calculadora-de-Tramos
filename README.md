@@ -5,8 +5,7 @@
 Creada con Python y Kivy.   
 Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨   
 
-**Imágenes de la versión 1.0** (desde PC)    
-
+**Imágenes de la versión 2.0** (desde Android)    
 
 ## Características 
 - Interfaz sencilla
