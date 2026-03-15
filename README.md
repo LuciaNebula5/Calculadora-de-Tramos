@@ -1,7 +1,7 @@
 # Calculadora de Tramos Aplicación
 ⚠️DISPONIBLE SOLO PARA **Android**
 
-🔧**Versión:** 2.0  
+🔧**Versión:** 3.0  
 Creada con Python y Kivy.   
 Esta app es una calculadora en proceso de pruebas, desarrollada por Lucía. ✨   
 
